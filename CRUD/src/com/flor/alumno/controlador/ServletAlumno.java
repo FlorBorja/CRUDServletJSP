@@ -56,9 +56,9 @@ public class ServletAlumno extends HttpServlet {
 				//System.out.println("entro");
 				registrar(req, res);
 				break;
-			/*case "mostrar":
+			case "mostrar":
 				mostrar(req, res);
-				break;*/
+				break;
 			case "buscarId":
 				buscarId(req, res);
 				break;
@@ -91,18 +91,15 @@ public class ServletAlumno extends HttpServlet {
 	
 	private void index (HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException{
 		//mostrar(request, response);
-		//RequestDispatcher dispatcher= req.getRequestDispatcher("index.jsp");
-		//dispatcher.forward(req, res);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
-		List<Alumno> listaAlumnos= alumnoDAO.listarAlumnos();
-		req.setAttribute("lista", listaAlumnos);
+		RequestDispatcher dispatcher= req.getRequestDispatcher("index.jsp");
 		dispatcher.forward(req, res);
 	}
 
 	private void registrar(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, SQLException {
 		Alumno alumno = new Alumno(0, Integer.parseInt(req.getParameter("ncontrol")), req.getParameter("nombre"), req.getParameter("paterno"), req.getParameter("materno"), req.getParameter("curso"), Integer.parseInt(req.getParameter("semestre")));
 		alumnoDAO.insertar(alumno);
-		index(req, res);
+		RequestDispatcher dispatcher= req.getRequestDispatcher("/Vista/mostrar.jsp");
+		dispatcher.forward(req, res);
 	}
 	
 	private void nuevo(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, SQLException {
@@ -110,20 +107,19 @@ public class ServletAlumno extends HttpServlet {
 		dispatcher.forward(req, res);
 	}
 	
-	
-	/*private void mostrar(HttpServletRequest req, HttpServletResponse res) throws SQLException, IOException , ServletException{
+	private void mostrar(HttpServletRequest req, HttpServletResponse res) throws SQLException, IOException , ServletException{
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/Vista/mostrar.jsp");
 		List<Alumno> listaAlumnos= alumnoDAO.listarAlumnos();
 		req.setAttribute("lista", listaAlumnos);
 		dispatcher.forward(req, res);
-	}	*/
+	}
 	
 	private void buscarId(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException{
 		Alumno alumno =  alumnoDAO.obtenerID(Integer.parseInt(req.getParameter("id")));
 		List<Alumno> lista= new ArrayList<Alumno>();
 		lista.add(alumno);
 		req.setAttribute("lista", lista);
-		RequestDispatcher dispatcher = req.getRequestDispatcher("index.jsp");
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/Vista/mostrar.jsp");
 		dispatcher.forward(req, res);
 	}
 	
@@ -138,12 +134,14 @@ public class ServletAlumno extends HttpServlet {
 	private void editar(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException{
 		Alumno alumno = new Alumno(Integer.parseInt(req.getParameter("id")), Integer.parseInt(req.getParameter("ncontrol")), req.getParameter("nombre"), req.getParameter("paterno"), req.getParameter("materno"), req.getParameter("curso"), Integer.parseInt(req.getParameter("semestre")));
 		alumnoDAO.actualizar(alumno);
-		index(req, res);
+		RequestDispatcher dispatcher= req.getRequestDispatcher("/Vista/mostrar.jsp");
+		dispatcher.forward(req, res);
 	}
 	
 	private void eliminar(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException{
 		Alumno alumno = alumnoDAO.obtenerID(Integer.parseInt(req.getParameter("id")));
 		alumnoDAO.eliminar(alumno);
-		index(req, res);
+		RequestDispatcher dispatcher= req.getRequestDispatcher("/Vista/mostrar.jsp");
+		dispatcher.forward(req, res);
 	}
 }

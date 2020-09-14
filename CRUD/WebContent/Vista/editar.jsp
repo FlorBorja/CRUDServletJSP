@@ -13,13 +13,13 @@
 		<form action="servletAlumno?action=editar" method="post" >
 			<table>
 				<tr>
-					<th><a href="servletAlumno?action=index" >Volver al menú</a></th>
+					<th><a href="servletAlumno?action=mostrar" >Volver al menú</a></th>
 				</tr>
 			</table>
 			<table>
 				<tr>
 					<td><label>Id</label></td>
-					<td><input type="text" name="id" value='<c:out value="${alumno.id}"></c:out>' ></td>
+					<td><input type="hidden" name="id" value='<c:out value="${alumno.id}"></c:out>' ></td>
 				</tr>
 				<tr>
 					<td><label>No. Control</label></td>

@@ -12,7 +12,7 @@
 		<form action="servletAlumno?action=registrar" method="post">
 			<table>
 				<tr>
-					<th><a href="servletAlumno?action=index" >Volver al menú</a> </td>
+					<th><a href="servletAlumno?action=mostrar" >Volver al menú</a> </td>
 				</tr>
 			</table>
 			<table>
