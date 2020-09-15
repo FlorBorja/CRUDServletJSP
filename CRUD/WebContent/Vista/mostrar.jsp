@@ -10,6 +10,12 @@
 	</head>
 	<body>
 		<h1>Administrar Alumnos</h1>
+		<%
+			String name=(String)session.getAttribute("name");
+			if(name==null){	
+			response.sendRedirect("servletUsuario?action=login");}
+			else{System.out.println("Sesión actual: " +name);}
+		%>
 		<table>
 			<tr>
 				<th><a href="servletAlumno?action=nuevo">Registrar Alumno</a></th>			

@@ -10,6 +10,12 @@
 	</head>
 	<body>
 		<h1>Actualizar Alumno</h1>
+		<%
+			String name=(String)session.getAttribute("name");
+			if(name==null){	
+			response.sendRedirect("servletUsuario?action=login");}
+			else{System.out.println("Sesión actual: " +name);}
+		%>
 		<form action="servletAlumno?action=editar" method="post" >
 			<table>
 				<tr>

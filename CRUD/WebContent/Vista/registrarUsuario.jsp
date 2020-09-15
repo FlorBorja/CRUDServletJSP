@@ -12,7 +12,7 @@
 		<form action="servletUsuario?action=registrarUsuario" method="post">
 			<table>
 				<tr>
-					<th><a href="servletUsuario?action=index" >Volver al login</a> </td>
+					<th><a href="servletUsuario?action=login" >Volver al login</a> </td>
 				</tr>
 			</table>
 			<table>

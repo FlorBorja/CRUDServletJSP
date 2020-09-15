@@ -9,6 +9,12 @@
 	</head>
 	<body>
 		<h1>Registrar Alumno</h1>
+		<%
+			String name=(String)session.getAttribute("name");
+			if(name==null){	
+			response.sendRedirect("servletUsuario?action=login");}
+			else{System.out.println("Sesión actual: " +name);}
+		%>
 		<form action="servletAlumno?action=registrar" method="post">
 			<table>
 				<tr>

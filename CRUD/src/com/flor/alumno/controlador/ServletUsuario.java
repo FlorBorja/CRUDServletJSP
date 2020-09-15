@@ -2,6 +2,7 @@ package com.flor.alumno.controlador;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,13 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.flor.alumno.dao.UsuarioDAO;
+import com.flor.alumno.modelo.Alumno;
 import com.flor.alumno.modelo.Usuario;
+import com.flor.alumno.controlador.ServletAlumno;
 
 @WebServlet("/servletUsuario")
 public class ServletUsuario extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	UsuarioDAO usuarioDAO;
+	ServletAlumno servletAlumno;
 
 	public void init() {
 		String jdbcURL = getServletContext().getInitParameter("jdbcURL");
@@ -41,13 +45,16 @@ public class ServletUsuario extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet..");
+		System.out.println("Hola Servlet Usuario..");
 		String action = req.getParameter("action");
-		System.out.println(action);
+		System.out.println("Accion del servlet Usuario: "+action);
 		try {
 			switch (action) {
 			case "index":
 				index(req, res);
+				break;
+			case "login":
+				login(req, res);
 				break;
 			case "validarUsuario":
 				validarUsuario(req, res);
@@ -56,11 +63,9 @@ public class ServletUsuario extends HttpServlet {
 				nuevoUsuario(req, res);
 				break;
 			case "registrarUsuario":
-				//System.out.println("entro");
 				registrarUsuario(req, res);
 				break;
 			case "cerrarSesion":
-				//System.out.println("entro");
 				cerrarSesion(req, res);
 				break;
 			}			
@@ -75,7 +80,7 @@ public class ServletUsuario extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet..");
+		System.out.println("Hola Servlet Usuario..");
 		doGet(req, res);
 	}
 	
@@ -84,34 +89,30 @@ public class ServletUsuario extends HttpServlet {
 		dispatcher.forward(req, res);
 	}
 	
+	private void login(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException{
+		RequestDispatcher dispatcher= req.getRequestDispatcher("/Vista/login.jsp");
+		dispatcher.forward(req, res);
+	}
+	
 	private void validarUsuario(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException{
-		Usuario usuario = new Usuario(req.getParameter("usuario"), req.getParameter("password"));
-		
-		try {
-			if(req.getParameter("ckbox").equals("on")) {
-				Cookie cookie = new Cookie("usuario", req.getParameter("usuario")); 
-				cookie.setMaxAge(60*60*24);
-				 res.addCookie(cookie);
-				 System.out.println("cookie creada");
-			}
-		}catch(NullPointerException e) {
-			System.out.print("checkbox vacio");
-		}
-		
-		 if(usuarioDAO.validar(usuario)){ 
-			 	RequestDispatcher dispatcher= req.getRequestDispatcher("/Vista/mostrar.jsp");
-				dispatcher.forward(req, res);
+		Usuario usuario = new Usuario(0, req.getParameter("usuario"), req.getParameter("password"));
+		 if(usuarioDAO.validar(usuario)){
+			 HttpSession session=req.getSession();  
+		     session.setAttribute("name",req.getParameter("usuario"));  
+		     String name=(String)session.getAttribute("name");
+		     System.out.println("Sesion iniciada con el usuario: "+ name);
+		     System.out.println("Hola, "+name+" bienvenido al listado de alumnos");  
+		     RequestDispatcher dispatcher = req.getRequestDispatcher("/Vista/mostrar.jsp");
+		     dispatcher.forward(req, res); 
+		 }else{   
+		 	System.out.println("Usuario o contraseña incorrecto");
+	        RequestDispatcher dispatcher= req.getRequestDispatcher("/Vista/login.jsp");
+			dispatcher.forward(req, res);  
 		    }  
-		    else{  
-		        System.out.print("Usuario o contraseña inconrrecto");  
-		        RequestDispatcher dispatcher= req.getRequestDispatcher("index.jsp");
-				dispatcher.forward(req, res);  
-		    }  
-		    System.out.close();   
 	}
 	
 	private void registrarUsuario(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, SQLException {
-		Usuario usuario = new Usuario(req.getParameter("usuario"), req.getParameter("password"));
+		Usuario usuario = new Usuario(0, req.getParameter("usuario"), req.getParameter("password"));
 		usuarioDAO.insertarUsuario(usuario);
 		index(req, res);
 	}
@@ -123,8 +124,10 @@ public class ServletUsuario extends HttpServlet {
 	
 	private void cerrarSesion(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, SQLException {
 		HttpSession session = req.getSession();
+		System.out.println("Se cerrara la siguiente sesión: "+session.getAttribute("name"));
+		//session.removeAttribute("name");
 		session.invalidate();
-		RequestDispatcher dispatcher= req.getRequestDispatcher("index.jsp");
-		dispatcher.forward(req, res);
+		System.out.println("Se ha cerrado la sesión de manera exitosa");
+		index(req, res);
 	}
 }

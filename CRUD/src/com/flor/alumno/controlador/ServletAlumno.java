@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.flor.alumno.dao.AlumnoDAO;
 import com.flor.alumno.modelo.Alumno;
@@ -41,9 +42,9 @@ public class ServletAlumno extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet..");
+		System.out.println("Hola Servlet Alumno..");
 		String action = req.getParameter("action");
-		System.out.println(action);
+		System.out.println("Accion del servlet Alumno: "+action);
 		try {
 			switch (action) {
 			case "index":
@@ -85,7 +86,7 @@ public class ServletAlumno extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet..");
+		System.out.println("Hola Servlet Alumno..");
 		doGet(req, res);
 	}
 	
@@ -126,7 +127,6 @@ public class ServletAlumno extends HttpServlet {
 	private void showEditar(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, SQLException {
 		Alumno alumno = alumnoDAO.obtenerID(Integer.parseInt(req.getParameter("id")));
 		req.setAttribute("alumno", alumno);
-		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/Vista/editar.jsp");
 		dispatcher.forward(req, res);
 	}

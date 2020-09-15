@@ -1,12 +1,22 @@
 package com.flor.alumno.modelo;
 
 public class Usuario {
+	private int id;
 	private String usuario;
 	private String password;
 	
-	public Usuario(String usuario, String password) {
+	public Usuario(int id, String usuario, String password) {
+		this.id = id;
 		this.usuario = usuario;
 		this.password = password;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getUsuario() {

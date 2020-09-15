@@ -23,12 +23,13 @@ public class UsuarioDAO {
 	//INSERTAR USUARIO
 	public boolean insertarUsuario (Usuario usuario) throws SQLException{
 		
-		String sql = "INSERT INTO usuario (usuario, password) VALUES (?, ?)";
+		String sql = "INSERT INTO usuario (id, usuario, password) VALUES (?, ?, ?)";
 		con.conectar();
 		connection = con.getJdbcConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setString(1, usuario.getUsuario());
-		statement.setString(2, usuario.getPassword());
+		statement.setString(1, null);
+		statement.setString(2, usuario.getUsuario());
+		statement.setString(3, usuario.getPassword());
 		
 		boolean rowInserted = statement.executeUpdate() > 0;
 		statement.close();
@@ -45,7 +46,7 @@ public class UsuarioDAO {
 		connection = con.getJdbcConnection();
 		      
 		PreparedStatement statement = connection.prepareStatement(  
-		"SELECT * FROM usuario where usuario=? and password=?");  
+		"SELECT * FROM usuario where usuario=? and password=?"); 
 		statement.setString(1,usuario.getUsuario());  
 		statement.setString(2,usuario.getPassword());  
 		      
