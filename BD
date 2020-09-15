@@ -1,0 +1,23 @@
+CREATE DATABASE servlet;
+
+USE servlet;
+
+CREATE TABLE alumno (
+  id INT NOT NULL AUTO_INCREMENT,
+  ncontrol INT NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
+  paterno VARCHAR(50) NOT NULL,
+  materno VARCHAR(50) NOT NULL,
+  curso VARCHAR(2) NOT NULL,
+  semestre INT NOT NULL,
+    
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE usuario(
+  id INT NOT NULL AUTO_INCREMENT,
+  usuario VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL,
+    
+  PRIMARY KEY(id)
+);
